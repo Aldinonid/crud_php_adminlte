@@ -1,11 +1,11 @@
 <?php
-require 'functions.php';
+require 'conf/functions.php';
 
 if (isset($_POST["register"])) {
 
-  if (registrasi($_POST) > 0) {
+  if (register($_POST) > 0) {
     echo "<script>
-            alert('user baru berhasil ditambahkan!');
+            alert('User has been added!');
           </script>";
     header("Location: login.php");
   } else {

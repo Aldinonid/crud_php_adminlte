@@ -1,10 +1,27 @@
 <?php
 session_start();
 
-require 'functions.php';
+require 'conf/functions.php';
+
+//? Check cookie
+if (isset($_COOKIE['id']) && isset($_COOKIE['key'])) {
+  $id = $_COOKIE['id'];
+  $key = $_COOKIE['key'];
+
+  //? Retrieve username based on id
+  $result = mysqli_query($conn, "SELECT username FROM users WHERE id = $id");
+  $users = mysqli_query($conn, "SELECT * FROM users WHERE id = $id");
+  $row = mysqli_fetch_assoc($result);
+  $uName = mysqli_fetch_assoc($users);
+
+  //? check cookie and username
+  if ($key === hash('sha256', $row['username'])) {
+    $_SESSION['login'] = true;
+    $_SESSION["nama"] = $uName["full_name"];
+  }
+}
 
 if (isset($_SESSION["login"])) {
-
   header("Location: index.php");
   exit;
 }
@@ -16,21 +33,21 @@ if (isset($_POST["login"])) {
 
   $result = mysqli_query($conn, "SELECT * FROM users WHERE username = '$username'");
 
-  // cek username
+  //? check username
   if (mysqli_num_rows($result) === 1) {
 
-    // cek password
+    //? check password
     $row = mysqli_fetch_assoc($result);
     if (password_verify($password, $row["password"])) {
-      // set session
+      //? set session
       $_SESSION["login"] = true;
       $_SESSION["nama"] = $row["full_name"];
 
-      // cek remember me
+      //? check remember me
       if (isset($_POST['remember'])) {
-        // buat cookie
-        setcookie('id', $row['id'], time() + 60);
-        setcookie('key', hash('sha256', $row['username']), time() + 60);
+        //? create cookie
+        setcookie('id', $row['id'], time() + 3600);
+        setcookie('key', hash('sha256', $row['username']), time() + 3600);
       }
 
       header("Location: index.php");

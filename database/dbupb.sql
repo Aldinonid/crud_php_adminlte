@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 09, 2020 at 03:27 PM
+-- Generation Time: Jun 09, 2020 at 07:18 PM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.4.5
 
@@ -24,6 +24,29 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `dosen`
+--
+
+CREATE TABLE `dosen` (
+  `id` int(100) NOT NULL,
+  `nid` int(12) NOT NULL,
+  `nama` varchar(255) NOT NULL,
+  `pendidikan` varchar(255) NOT NULL,
+  `fakultas` varchar(255) NOT NULL,
+  `prodi` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `dosen`
+--
+
+INSERT INTO `dosen` (`id`, `nid`, `nama`, `pendidikan`, `fakultas`, `prodi`) VALUES
+(1, 1234567890, 'Tukino', 'Teknik Informatika', 'Teknik dan Komputer', 'Sistem Informasi'),
+(3, 123, 'Sasa', 'Teknik dan Komputer', 'Teknik n komputer', 'Sistem Informasi');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `mahasiswa`
 --
 
@@ -31,24 +54,42 @@ CREATE TABLE `mahasiswa` (
   `id` int(11) NOT NULL,
   `npm` varchar(9) NOT NULL,
   `nama` varchar(30) NOT NULL,
-  `alamat` text NOT NULL,
-  `hp` varchar(15) NOT NULL,
-  `email` varchar(30) NOT NULL,
-  `photo` varchar(50) NOT NULL
+  `kelas` varchar(10) NOT NULL,
+  `prodi` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `mahasiswa`
 --
 
-INSERT INTO `mahasiswa` (`id`, `npm`, `nama`, `alamat`, `hp`, `email`, `photo`) VALUES
-(21, '171510003', 'Ricky', 'Batam', '08123455677', 'pb171510003@upbatam.ac.id', '5ea98165f03f9.jpg'),
-(22, '171510008', 'Event', 'Batam', '081234567890', 'pb171510008@upbatam.ac.id', '5ea9825ec0123.jpg'),
-(23, '171510016', 'Albert', 'Batam', '081234567890', 'pb171510016@upbatam.ac.id', '5ea982bc5c175.jpg'),
-(24, '171510018', 'Kelvin', 'Batam', '081234567890', 'pb171510018@upbatam.ac.id', '5ea982da8482b.jpg'),
-(25, '180810048', 'Nelly', 'Batam', '081234567890', 'pb180810048@upbatam.ac.id', '5ea982f85b8ac.jpg'),
-(26, '170910102', 'Angelia', 'Batam', '081234567890', 'pb170910102@upbatam.ac.id', '5ea983131902a.jpg'),
-(27, '181510015', 'Ardyanto', 'Batam', '081234567890', 'pb181510015@upbatam.ac.id', '5ea9832c9ec75.jpg');
+INSERT INTO `mahasiswa` (`id`, `npm`, `nama`, `kelas`, `prodi`) VALUES
+(21, '171510003', 'Ricky', 'Batam', '08123455677'),
+(22, '171510008', 'Event', 'Batam', '081234567890'),
+(23, '171510016', 'Albert', 'Batam', '081234567890'),
+(24, '171510018', 'Kelvin', 'Batam', '081234567890'),
+(25, '180810048', 'Nelly', 'Batam', '081234567890');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `mata_kuliah`
+--
+
+CREATE TABLE `mata_kuliah` (
+  `id` int(100) NOT NULL,
+  `kode_matkul` int(20) NOT NULL,
+  `nama_matkul` varchar(255) NOT NULL,
+  `sks` int(10) NOT NULL,
+  `kategori` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `mata_kuliah`
+--
+
+INSERT INTO `mata_kuliah` (`id`, `kode_matkul`, `nama_matkul`, `sks`, `kategori`) VALUES
+(1, 123, 'Pemograman Web', 4, 'Mandatory'),
+(3, 1232, 'Internet of Things', 2, 'Mandatory');
 
 -- --------------------------------------------------------
 
@@ -77,11 +118,23 @@ INSERT INTO `users` (`id`, `username`, `password`, `full_name`) VALUES
 --
 
 --
+-- Indexes for table `dosen`
+--
+ALTER TABLE `dosen`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `mahasiswa`
 --
 ALTER TABLE `mahasiswa`
   ADD PRIMARY KEY (`id`),
   ADD KEY `npm` (`npm`) USING BTREE;
+
+--
+-- Indexes for table `mata_kuliah`
+--
+ALTER TABLE `mata_kuliah`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `users`
@@ -94,10 +147,22 @@ ALTER TABLE `users`
 --
 
 --
+-- AUTO_INCREMENT for table `dosen`
+--
+ALTER TABLE `dosen`
+  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
 -- AUTO_INCREMENT for table `mahasiswa`
 --
 ALTER TABLE `mahasiswa`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+
+--
+-- AUTO_INCREMENT for table `mata_kuliah`
+--
+ALTER TABLE `mata_kuliah`
+  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `users`

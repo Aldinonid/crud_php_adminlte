@@ -1,14 +1,16 @@
 <?php
 session_start();
+require 'conf/functions.php';
 
 if (!isset($_SESSION["login"])) {
   header("Location: login.php");
   exit;
 }
 
-require 'functions.php';
 
 $mhs = query("SELECT * FROM mahasiswa");
+$dosen = query("SELECT * FROM dosen");
+$matkul = query("SELECT * FROM mata_kuliah");
 $name = $_SESSION['nama'];
 
 
@@ -19,50 +21,9 @@ $name = $_SESSION['nama'];
 
 <body class="hold-transition sidebar-mini layout-fixed">
   <div class="wrapper">
-    <!-- Content Wrapper. Contains page content -->
-    <div class="content-wrapper">
-      <!-- Content Header (Page header) -->
-      <div class="content-header">
-        <div class="container-fluid">
-          <div class="row mb-2">
-            <div class="col-sm-6">
-              <h1 class="m-0 text-dark">Hi <?= $name; ?>, Welcome to Dashboard</h1>
-            </div><!-- /.col -->
-            <div class="col-sm-6">
-              <ol class="breadcrumb float-sm-right">
-                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                <li class="breadcrumb-item active">Dashboard</li>
-              </ol>
-            </div><!-- /.col -->
-          </div><!-- /.row -->
-        </div><!-- /.container-fluid -->
-      </div>
-      <!-- /.content-header -->
-
-      <!-- Main content -->
-      <section class="content">
-        <div class="container-fluid">
-          <!-- Small boxes (Stat box) -->
-          <div class="row">
-            <div class="col-lg-3 col-6">
-              <!-- small box -->
-              <div class="small-box bg-info">
-                <div class="inner">
-                  <h3><?= count($mhs); ?></h3>
-
-                  <p>Students</p>
-                </div>
-                <div class="icon">
-                  <i class="fas fa-user"></i>
-                </div>
-              </div>
-            </div>
-            <!-- ./col -->
-          </div>
-        </div>
-      </section>
-      <!-- /.content -->
-    </div>
+    <!-- Main content -->
+    <?php include 'conf/page.php' ?>
+    <!-- /.content -->
     <?php include 'views\partials\footer.php'; ?>
   </div>
   <!-- ./wrapper -->

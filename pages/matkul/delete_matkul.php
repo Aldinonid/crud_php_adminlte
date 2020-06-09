@@ -1,22 +1,19 @@
-<?php 
-require 'functions.php';
+<?php
 
 $id = $_GET["id"];
 
-if( delete($id) > 0 ) {
+if (deleteCourse($id) > 0) {
 	echo "
 		<script>
 			alert('Data has been deleted !');
-			document.location.href = 'view_mhs.php';
+			document.location.href = 'index.php?page=view_matkul';
 		</script>
 	";
 } else {
 	echo "
 		<script>
 			alert('Data delete failed !');
-			document.location.href = 'view_mhs.php';
+			document.location.href = 'index.php?page=view_matkul';
 		</script>
 	";
 }
-
-?>
