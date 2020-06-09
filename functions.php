@@ -1,18 +1,20 @@
-<?php 
+<?php
 // ? Connect a DB
 $conn = mysqli_connect("localhost", "root", "", "dbupb");
 
-function query($query) {
+function query($query)
+{
 	global $conn;
 	$result = mysqli_query($conn, $query);
 	$rows = [];
-	while( $row = mysqli_fetch_assoc($result) ) {
+	while ($row = mysqli_fetch_assoc($result)) {
 		$rows[] = $row;
 	}
 	return $rows;
 }
 
-function add($data) {
+function add($data)
+{
 	global $conn;
 
 	$npm = htmlspecialchars($data["npm"]);
@@ -23,7 +25,7 @@ function add($data) {
 
 	// ? Upload photo
 	$photo = upload();
-	if( !$photo ) {
+	if (!$photo) {
 		return false;
 	}
 
@@ -36,14 +38,15 @@ function add($data) {
 	return mysqli_affected_rows($conn);
 }
 
-function upload() {
+function upload()
+{
 	$namaFile = $_FILES['photo']['name'];
 	$ukuranFile = $_FILES['photo']['size'];
 	$error = $_FILES['photo']['error'];
 	$tmpName = $_FILES['photo']['tmp_name'];
 
 	// ? Check is there any photo uploaded
-	if( $error === 4 ) {
+	if ($error === 4) {
 		echo "<script>
 						alert('Select a Picture');
 			  	</script>";
@@ -54,7 +57,7 @@ function upload() {
 	$ekstensiGambarValid = ['jpg', 'jpeg', 'png'];
 	$ekstensiGambar = explode('.', $namaFile);
 	$ekstensiGambar = strtolower(end($ekstensiGambar));
-	if( !in_array($ekstensiGambar, $ekstensiGambarValid) ) {
+	if (!in_array($ekstensiGambar, $ekstensiGambarValid)) {
 		echo "<script>
 						alert('You're not upload a image file!');
 			  	</script>";
@@ -73,14 +76,16 @@ function upload() {
 }
 
 
-function delete($id) {
+function delete($id)
+{
 	global $conn;
 	mysqli_query($conn, "DELETE FROM mahasiswa WHERE id = $id");
 	return mysqli_affected_rows($conn);
 }
 
 
-function update($data) {
+function update($data)
+{
 	global $conn;
 
 	$id = $data["id"];
@@ -90,14 +95,14 @@ function update($data) {
 	$hp = htmlspecialchars($data["hp"]);
 	$email = htmlspecialchars($data["email"]);
 	$gambarLama = htmlspecialchars($data["gambarLama"]);
-	
+
 	// ? Check is the uploaded file is a new data
-	if( $_FILES['photo']['error'] === 4 ) {
+	if ($_FILES['photo']['error'] === 4) {
 		$photo = $gambarLama;
 	} else {
 		$photo = upload();
 	}
-	
+
 
 	$query = "UPDATE Mahasiswa SET
 				npm = '$npm',
@@ -111,6 +116,32 @@ function update($data) {
 
 	mysqli_query($conn, $query);
 
-	return mysqli_affected_rows($conn);	
+	return mysqli_affected_rows($conn);
 }
-?>
+
+function registrasi($data)
+{
+	global $conn;
+
+	$fullName = $data["fullname"];
+	$username = strtolower(stripslashes($data["username"]));
+	$password = mysqli_real_escape_string($conn, $data["password"]);
+
+	// cek username sudah ada atau belum
+	$result = mysqli_query($conn, "SELECT username FROM users WHERE username = '$username'");
+
+	if (mysqli_fetch_assoc($result)) {
+		echo "<script>
+						alert('username sudah terdaftar!')
+					</script>";
+		return false;
+	}
+
+	// enkripsi password
+	$password = password_hash($password, PASSWORD_DEFAULT);
+
+	// tambahkan userbaru ke database
+	mysqli_query($conn, "INSERT INTO users VALUES('', '$username', '$password', '$fullName')");
+
+	return mysqli_affected_rows($conn);
+}
